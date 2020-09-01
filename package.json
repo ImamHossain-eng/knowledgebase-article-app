@@ -1,0 +1,14 @@
+{
+  "name": "knowledgebase",
+  "version": "1.0.0",
+  "description": "Simple Article writing apps",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app"
+  },
+  "author": "Babu",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

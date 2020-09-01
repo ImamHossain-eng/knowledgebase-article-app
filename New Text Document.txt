@@ -1,0 +1,6 @@
+node js
+express
+mongodb atlas
+mongoose
+pug template engine
+ajax
