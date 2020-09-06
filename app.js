@@ -27,6 +27,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
+//Set public folder
+app.use(express.static(path.join(__dirname, 'public')));
+
 //Home Route
 app.get('/', function(req, res) {
     Article.find({}, function(err, articles) {
@@ -65,7 +68,7 @@ app.post('/articles/add', function(req, res) {
 
 
 //Start Server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3100;
 app.listen(PORT, function() {
-    console.log('Server started on 3000');
+    console.log('Server started on 3100');
 });
