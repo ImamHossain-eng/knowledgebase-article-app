@@ -3,8 +3,14 @@ html
     head
         title Knowledgebase Article
         link(rel='stylesheet' href='/bower_components/bootstrap/dist/css/bootstrap.css')
+        link(rel='stylesheet' href='/css/style.css')
+        
     body
-        block content
-        hr
-        br
-        footer
+        .container
+            block content
+            hr
+            br
+            footer
+                p Copyright &copy; 2020
+            script(src='/js/main.js')
+            script(src='https://code.jquery.com/jquery-3.5.1.slim.min.js')
