@@ -2,6 +2,9 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const { body, validationResult } = require('express-validator');
+const flash = require('connect-flash');
+const session = require('express-session');
 const connectDB = require('./db/connection');
 
 //Connect Database
@@ -29,6 +32,38 @@ app.use(bodyParser.json());
 
 //Set public folder
 app.use(express.static(path.join(__dirname, 'public')));
+
+//Express Session Middleware
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}));
+//Express messages middleware
+app.use(require('connect-flash')());
+app.use(function (req, res, next) {
+  res.locals.messages = require('express-messages')(req, res);
+  next();
+});
+//Express validator middleware
+app.post('/user', [
+  // username must be an email
+  body('username').isEmail(),
+  // password must be at least 5 chars long
+  body('password').isLength({ min: 5 })
+], (req, res) => {
+  // Finds the validation errors in this request and wraps them in an object with handy functions
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  User.create({
+    username: req.body.username,
+    password: req.body.password
+  }).then(user => res.json(user));
+});
 
 //Home Route
 app.get('/', function (req, res) {

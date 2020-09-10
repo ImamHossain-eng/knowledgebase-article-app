@@ -1,6 +1,11 @@
 extends layout
 block content
-    h1 #{title}
+    .row
+        .col-md-6
+            h1 #{title}
+        .col-md-6
+            a.btn.btn-primary(href="/articles/add")
+    
     ul.list-group
         each article, i in articles
             li.list-group-item
