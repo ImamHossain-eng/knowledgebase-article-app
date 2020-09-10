@@ -36,9 +36,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 //Express Session Middleware
 app.use(session({
   secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: true }
+  resave: true,
+  saveUninitialized: true
 }));
 //Express messages middleware
 app.use(require('connect-flash')());
@@ -96,7 +95,19 @@ app.get('/articles/add', function (req, res) {
 });
 //Add submit post Route
 app.post('/articles/add', function (req, res) {
-  let article = new Article();
+  req.checkBody('title', 'This is required').notEmpty();
+  req.checkBody('author', 'This is required').notEmpty();
+  req.checkBody('body', 'This is required').notEmpty();
+  //Get errors
+  let errors = req.validationErrors();
+
+  if(errors){
+    res.render('add',{
+      title: 'Add Article',
+      errors:errors
+    });
+  } else {
+    let article = new Article();
   article.title = req.body.title;
   article.author = req.body.author;
   article.body = req.body.body;
@@ -106,9 +117,11 @@ app.post('/articles/add', function (req, res) {
       console.log(err);
       return;
     } else {
+      req.flash('success', 'Article Saved Successfully');
       res.redirect('/');
     }
-  });
+  });    
+  }
 });
 
 //Load edit form
@@ -135,6 +148,7 @@ app.post('/articles/edit/:id', function (req, res) {
       console.log(err);
       return;
     } else {
+      req.flash('success', 'Article updated');
       res.redirect('/');
     }
   });
